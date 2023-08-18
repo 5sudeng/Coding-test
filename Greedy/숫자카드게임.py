@@ -1,6 +1,6 @@
 n, m = map(int, input().split())
 cards = [list(map(int, input().split())) for i in range(n)]
-small, idx = 0, 0
+small, idx = 0, 0 
 
 for rows in cards :
     if min(rows) > small :

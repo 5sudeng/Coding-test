@@ -1,7 +1,7 @@
 N, M, K = map(int, input().split())
 nums = list(map(int, input().split()))
 
-nums.sort(reverse=True)
+nums.sort(reverse=True) 
 
 first = nums[0]
 second = nums[1]

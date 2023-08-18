@@ -1,5 +1,5 @@
 n, k = map(int, input().split())
-count = 0
+count = 0 
  
 while True :
     if n % k == 0 :
