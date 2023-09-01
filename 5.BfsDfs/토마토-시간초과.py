@@ -4,18 +4,19 @@ import sys
 m, n = map(int, sys.stdin.readline().split())
 graph = [list(map(int, sys.stdin.readline().split())) for i in range(n)]
 
+visited = [[-1 for _ in range(m)] for _ in range(n)]
+
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 def bfs(day, x, y) : 
-    if graph[x][y] == day or graph[x][y] == -1 :
-        return
     for i in range(4) :
         nx = x + dx[i]
         ny = y + dy[i]
         if nx<0 or ny<0 or nx>=n or ny>=m or graph[nx][ny] != 0 :
             continue
-        graph[nx][ny] = day
+        graph[nx][ny] = 1
+        visited[nx][ny] = day
 
 def isAlone(x, y) :
     for i in range(4) :
@@ -27,31 +28,36 @@ def isAlone(x, y) :
             return False
     return True
 
+result = 0
+
 isBreak = False 
 
-for i in range(n*m) : 
-    j, k = i//m , i%m
-    if graph[j][k] != 0 :
-        continue
-    if isAlone(j, k) :
-        isBreak = True
+for i in range(n) :
+    for j in range(m) :
+        if graph[i][j] != 0 :
+            continue
+        isBreak = isAlone(i, j)
+        if isBreak :
+            break
+    if isBreak :
+        result = -1
         break
 
-day = 2
 while not isBreak :
     temp = 0
-    for i in range(n*m) :
-        j, k = i//m , i%m
-        value = graph[j][k]
-        if value == 0 :
-            temp += 1
-            continue
-        if value != 0 or value != -1 or value != day:
-            bfs(day, j, k)
-    
-    day += 1
+    isBreak = False
+    for i in range(n) :
+        for j in range(m) :
+            if visited[i][j] == result :
+                continue
+            if graph[i][j] == 0 :
+                temp += 1
+                continue
+            if graph[i][j] == 1 :
+                bfs(result, i, j)
 
     if temp == 0:
         break
+    result += 1
 
-print(day - 3)
+print(result)
