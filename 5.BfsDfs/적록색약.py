@@ -23,7 +23,7 @@ def countRG(x, y, count) :
                 graph[nx][ny] = count
                 queue.append((nx, ny))
 
-def countR(x, y, count) :
+def countElse(x, y, count, rgb) :
     graph[x][y] = count
     queue = deque()
     queue.append((x, y))
@@ -34,38 +34,7 @@ def countR(x, y, count) :
             ny = y + dy[i]
             if nx<0 or ny<0 or nx>=n or ny>= n :
                 continue
-            if graph[nx][ny] == "R" :
-                graph[nx][ny] = count
-                queue.append((nx, ny))
-
-
-def countG(x, y, count) :
-    graph[x][y] = count
-    queue = deque()
-    queue.append((x, y))
-    while queue :
-        x, y = queue.popleft()
-        for i in range(4) :
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if nx<0 or ny<0 or nx>=n or ny>= n :
-                continue
-            if graph[nx][ny] == "G" :
-                graph[nx][ny] = count
-                queue.append((nx, ny))
-
-def countB(x, y, count) :
-    graph[x][y] = count
-    queue = deque()
-    queue.append((x, y))
-    while queue :
-        x, y = queue.popleft()
-        for i in range(4) :
-            nx = x + dx[i]
-            ny = y + dy[i]
-            if nx<0 or ny<0 or nx>=n or ny>= n :
-                continue
-            if graph[nx][ny] == "B" :
+            if graph[nx][ny] == rgb :
                 graph[nx][ny] = count
                 queue.append((nx, ny))
 
@@ -73,20 +42,11 @@ result = []
 count = 0
 for i in range(n) :
     for j in range(n) :
-        if graph[i][j] == "R" :
-            countR(i, j, count)
-            count += 1
-        elif graph[i][j] == "G" :
-            countG(i, j, count)
-            count += 1
-        elif graph[i][j] == "B" :
-            countB(i, j, count)
+        if graph[i][j] in ["R", "G", "B"]:
+            countElse(i, j, count, graph[i][j])
             count += 1
         else :
             continue
-        for g in graph :
-            print(g)
-        print()
 
 result.append(count)
 count = 0
@@ -97,10 +57,10 @@ for i in range(n) :
             countRG(i, j, count)
             count += 1
         elif graph[i][j] == "B" :
-            countB(i, j, count)
+            countElse(i, j, count, "B")
             count += 1
         else :
             continue
 result.append(count)
 
-print(" ".join(result))
+print(result[0], result[1])
